@@ -10,7 +10,7 @@ pipeline {
 		NEXUS_PASS = 'admin123'
 		RELEASE_REPO = 'vprofile-release'
 		CENTRAL_REPO = 'vpro-maven-central'
-		NEXUSIP = '100.24.43.109'
+		NEXUSIP = '172.31.87.104'
 		NEXUSPORT = '8081'
 		NEXUS_GRP_REPO = 'vpro-maven-group'
         NEXUS_LOGIN = 'nexuslogin'
@@ -58,7 +58,15 @@ pipeline {
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             
-}
+        }
+        }
+        }
+
+    stage('QualityGate_Wait') {
+        steps{
+            timeout(time: 1, unit: 'HOURS') {
+            waitForQualityGate abortPipeline: true
+        }
         }
     }
   }
