@@ -1,9 +1,8 @@
 FROM openjdk:8 AS BUILD_IMAGE
+WORKDIR /app
+COPY . .
 RUN apt update && apt install maven -y
-RUN mkdir /app
-COPY vprofile-project /app/vprofile-project
-
-RUN cd /app/vprofile-project && mvn install
+RUN && mvn install
 
 FROM tomcat:8-jre11
 RUN rm -rf /usr/local/tomcat/webapps/*
