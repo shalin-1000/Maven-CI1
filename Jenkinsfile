@@ -10,7 +10,7 @@ pipeline {
 		NEXUS_PASS = 'admin123'
 		RELEASE_REPO = 'vprofile-release'
 		CENTRAL_REPO = 'vpro-maven-central'
-		NEXUSIP = '54.157.52.145'
+		NEXUSIP = '100.24.43.109'
 		NEXUSPORT = '8081'
 		NEXUS_GRP_REPO = 'vpro-maven-group'
         NEXUS_LOGIN = 'nexuslogin'
@@ -22,7 +22,23 @@ pipeline {
             sh 'mvn -s settings.xml -DskipTests install'
         }
 
+        post{
+            success {
+                echo "Archiving Artifacts"
+                archiveArtifacts artifacts: '**/*.war'
+            }
+        }
+
       }
+
+      stage('Test')
+        steps{
+            sh 'mvn test'
+        }
+    stage('Checkstyle Analysis')
+    steps{
+        sh 'mvn checkstyle:checkstyle'
+    }
   }
 
 }
